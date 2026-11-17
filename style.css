@@ -296,11 +296,9 @@ img {
   border-radius: 999px;
   color: var(--ink);
   font-family: var(--font-ui);
-  font-size: 0.8125rem;
+  font-size: 0.9375rem;
   font-weight: 600;
-  letter-spacing: 0.08em;
   text-decoration: none;
-  text-transform: uppercase;
   transition: background-color 200ms var(--ease), color 200ms var(--ease), border-color 200ms var(--ease);
 }
 
@@ -313,6 +311,7 @@ img {
 
 /* ---------- 5. About: the opening scene ---------- */
 .scene {
+  --photo: min(38vmin, 30svh, 16rem);
   position: relative;
   isolation: isolate;
   display: grid;
@@ -335,10 +334,9 @@ img {
   inset: -25%;
   z-index: -2;
   background:
-    radial-gradient(32% 28% at 30% 42%, rgb(244 154 184 / 0.34), transparent 70%),
-    radial-gradient(30% 34% at 68% 58%, rgb(126 52 120 / 0.42), transparent 70%),
-    radial-gradient(40% 40% at 52% 30%, rgb(19 40 62 / 0.8), transparent 72%),
-    radial-gradient(26% 22% at 75% 25%, rgb(184 41 95 / 0.25), transparent 70%);
+    radial-gradient(34% 30% at 32% 44%, rgb(244 154 184 / 0.16), transparent 70%),
+    radial-gradient(32% 36% at 68% 58%, rgb(126 52 120 / 0.22), transparent 70%),
+    radial-gradient(40% 40% at 52% 30%, rgb(19 40 62 / 0.6), transparent 72%);
   filter: blur(50px);
   animation: drift 26s ease-in-out infinite alternate;
   will-change: transform;
@@ -380,7 +378,6 @@ img {
   margin: -3.5px;
   border-radius: 50%;
   background: var(--signal);
-  box-shadow: 0 0 14px var(--signal);
   transform: rotate(var(--a, 0deg)) translateX(calc(var(--size) / 2));
 }
 
@@ -400,18 +397,10 @@ img {
   }
 }
 
-/* a faint horizon line through the middle of the scene */
-.horizon {
-  position: absolute;
-  inset-block-start: 50%;
-  inset-inline: var(--gutter);
-  z-index: -1;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.14) 18%, rgb(255 255 255 / 0.14) 82%, transparent);
-}
-
 .scene-top {
   grid-area: top;
+  /* never reaches past the photo's ring, whatever the screen size */
+  max-width: calc(50% - var(--photo) / 2 - 2.5rem);
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -422,14 +411,11 @@ img {
   animation: fade-in 1.2s 0.4s var(--ease) both;
 }
 
-.tag,
-.scene-side {
+.tag {
   color: var(--muted);
   font-family: var(--font-ui);
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+  font-size: 1rem;
+  font-weight: 500;
 }
 
 .scene-word {
@@ -505,31 +491,14 @@ img {
   inset-block-start: 50%;
   inset-inline-start: 50%;
   translate: -50% -50%;
-  width: min(38vmin, 16rem);
+  width: var(--photo);
   aspect-ratio: 1;
   object-fit: cover;
   object-position: 50% 24%;
   border-radius: 50%;
   outline: 1px solid rgb(244 154 184 / 0.4);
   outline-offset: 12px;
-  box-shadow: 0 0 0 12px rgb(11 11 13 / 0.35), 0 30px 120px -10px rgb(244 154 184 / 0.4);
   animation: fade-in 1.4s 0.2s var(--ease) both;
-}
-
-/* the two labels sit on the horizon line, at the edges */
-.scene-left,
-.scene-right {
-  position: absolute;
-  inset-block-start: 50%;
-  translate: 0 calc(-100% - 0.6rem);
-}
-
-.scene-left {
-  inset-inline-start: var(--gutter);
-}
-
-.scene-right {
-  inset-inline-end: var(--gutter);
 }
 
 /* the name: huge and thin, bottom left, rising into place on load */
@@ -1326,6 +1295,10 @@ img {
   }
 
   .scene-top {
+    max-width: none;
+  }
+
+  .scene-top {
     align-items: flex-start;
     justify-self: start;
     text-align: start;
@@ -1470,9 +1443,7 @@ img {
 
   .smoke,
   .orbit,
-  .horizon,
-  .pill,
-  .scene-side {
+  .pill {
     display: none;
   }
 
