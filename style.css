@@ -517,6 +517,12 @@ img {
     width: 10rem;
   }
 
+  .intro h1 {
+    font-size: clamp(2.1rem, 11vw, 3rem);
+    font-stretch: 108%;
+    white-space: nowrap;
+  }
+
   .edu-grid,
   .skills-grid {
     grid-template-columns: minmax(0, 1fr);
