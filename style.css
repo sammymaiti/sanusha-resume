@@ -40,6 +40,24 @@
   --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
+/* width of the fade on the phone nav row; animated by its own scroll
+   position, so it is 3rem at the start, 0 at the end, and 0 when the
+   row fits and cannot scroll (an inactive timeline leaves it at 0) */
+@property --nav-fade {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
+@keyframes nav-fade {
+  from {
+    --nav-fade: 3rem;
+  }
+  to {
+    --nav-fade: 0px;
+  }
+}
+
 /* ---------- 2. Element selectors: the base document ---------- */
 *,
 *::before,
@@ -542,8 +560,10 @@ img {
     padding-inline: calc(var(--gutter) - 0.7rem);
     overflow-x: auto;
     scrollbar-width: none;
-    /* fade the right edge so it reads as scrollable */
-    mask-image: linear-gradient(to right, #000 85%, transparent);
+    /* fade the right edge only while there is more to scroll */
+    mask-image: linear-gradient(to right, #000 calc(100% - var(--nav-fade)), transparent);
+    animation: nav-fade linear both;
+    animation-timeline: scroll(self inline);
   }
 
   .nav-links::-webkit-scrollbar {
@@ -590,6 +610,11 @@ img {
     display: none;
   }
 
+  h2,
+  h3 {
+    break-after: avoid;
+  }
+
   .intro,
   .section,
   .site-footer {
@@ -621,5 +646,11 @@ img {
   .footer-email {
     color: var(--ink);
     font-size: 1.4rem;
+  }
+
+  .site-footer h2,
+  .contact-list,
+  .contact-list a {
+    color: var(--text);
   }
 }
