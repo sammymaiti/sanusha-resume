@@ -1,23 +1,22 @@
 # Sanusha K B — Resume Website
 
-A responsive resume website built with plain HTML and CSS and published with GitHub Pages.
+A responsive resume website built with plain HTML and CSS (no JavaScript) and published with GitHub Pages.
 
 **Live site:** https://sammymaiti.github.io/sanusha-resume/
 
 ## Sections
-- **About** – profile and career objective
+- **About** – headline, career objective and a short facts row
 - **Education** – BBA in Digital Business and Entrepreneurship (BBA DBE), IIM Bangalore; St Claret Pre-University College; St Mary's Public School
 - **Experience** – Co-founder & COO, Centurion Robotics; HR Intern (Recruitment), SocioBlend
-- **Projects** – running operations at Centurion Robotics, expanding SocioBlend's intern team, and this website
+- **Projects** – running operations at Centurion Robotics, and this website
 - **Skills** – operations, people, ways of working, digital, and languages
 
 ## CSS highlights
-- Flexbox navigation bar, sticky at the top; on phones the links become a sideways-scrolling row
-- Each section is a two-column grid: the heading sits in a sticky left rail, content on the right
-- Projects use a bento grid sized by content weight, rearranged by `grid-template-areas` at each breakpoint
-- Responsive cards: the experience cards use a container query to switch between stacked and two-column layouts
-- Pink and navy palette defined as custom properties: navy ink from the printed resume, rose pink as the brand colour (hero band, lead project tile, markers, links), and pastel tints (rose, lilac, sky, peach) for the skill groups; every text colour passes WCAG AA
-- Type: Archivo (variable width axis) for headings and labels, Source Serif 4 for reading text, fluid sizes with `clamp()`
+- Flexbox navigation bar with an Auto / Light / Dark theme switch built from radio buttons and `:has()`
+- Colours defined once with `light-dark()`: rose pink and navy in light mode, black and light pink in dark mode; every text colour passes WCAG AA
+- Hero headline that rises into place line by line on load
+- Cards show a short front; the detail slides up on hover, or opens in place on tap (`@media (hover: none)`); front and detail share one grid cell so nothing overflows
+- Scroll-driven animations: scroll-spy navigation (`timeline-scope` + view timelines), a reading-progress line, the hero name narrowing along Archivo's width axis, and a fade on the phone nav row
+- Section rail layout with CSS Grid, a bento grid for projects, and a container query on the experience cards
 - Element, class and ID selectors, each group labelled in `style.css`
-- Scroll-driven CSS animations (no JavaScript): a reading-progress line under the header, and a fade on the phone nav row that shows only while there is more to scroll
-- Print stylesheet, so the page prints as a clean paper CV; reduced-motion support
+- Reduced-motion support and a print stylesheet that shows all the hidden detail
