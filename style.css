@@ -154,6 +154,7 @@ img {
 #about,
 #education,
 #experience,
+#projects,
 #skills,
 #contact {
   scroll-margin-top: 4.5rem; /* land below the sticky bar */
@@ -168,6 +169,30 @@ img {
 .site-header {
   background: var(--surface);
   border-block-end: 1px solid var(--line);
+}
+
+/* reading progress: a thin orange line under the bar, driven by page scroll */
+@supports (animation-timeline: scroll()) {
+  .site-header::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    inset-block-end: -1px;
+    height: 2px;
+    background: var(--signal);
+    transform-origin: 0 50%;
+    animation: read-progress linear both;
+    animation-timeline: scroll(root block);
+  }
+
+  @keyframes read-progress {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
 }
 
 .nav {
@@ -411,7 +436,7 @@ img {
   }
 }
 
-/* Tritonox: the one dark card on the page */
+/* Centurion Robotics: the one dark card on the page */
 .job-current {
   border-color: var(--ink);
   background: var(--ink);
@@ -433,17 +458,96 @@ img {
   color: #ff9a6b; /* 7.2:1 on ink */
 }
 
-/* Skills */
-.skills-grid {
+/* Projects: a bento grid sized by content weight, not filled for its own sake */
+.bento {
   display: grid;
-  grid-template-columns: 1.6fr 1fr;
+  grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+  grid-template-areas:
+    "lead hiring"
+    "lead site";
   gap: 1rem;
 }
 
-.skill-list {
-  columns: 2 13rem;
-  column-gap: 2rem;
+.tile {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.tile .when {
+  margin-block-end: 0;
+}
+
+.tile-lead {
+  grid-area: lead;
+  padding: clamp(1.5rem, 3.5vw, 2.5rem);
+}
+
+.tile-lead h3 {
+  font-size: clamp(1.5rem, 1.1rem + 1.3vw, 2.1rem);
+  font-stretch: 110%;
+  max-width: 18ch;
+}
+
+.tile-lead > p:not(.when) {
+  max-width: 34em;
+}
+
+.tile-hiring {
+  grid-area: hiring;
+}
+
+.tile-site {
+  grid-area: site;
+  background: #e6edf4;
+  border-color: #c9d5e1;
+}
+
+/* the four areas under her, as a small 2 x 2 table of cells */
+.ops {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+  margin-block-start: 0.9rem;
   list-style: none;
+}
+
+.ops li {
+  padding: 0.85rem 1rem;
+  border-radius: 6px;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 1.05rem;
+  font-stretch: 106%;
+  font-weight: 650;
+}
+
+.tile-link {
+  margin-block-start: auto;
+  padding-block-start: 0.4rem;
+  font-family: var(--font-ui);
+  font-weight: 600;
+}
+
+/* Skills: four groups and languages; languages take the wider slot */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.card-langs {
+  grid-column: span 2;
+}
+
+.skill-list {
+  list-style: none;
+}
+
+.card-langs .lang-list {
+  columns: 2;
+  column-gap: 2rem;
 }
 
 .skill-list li,
@@ -520,6 +624,17 @@ img {
     grid-template-columns: minmax(0, 1fr) 13rem;
     gap: 2rem 2.5rem;
   }
+
+  .bento {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-areas:
+      "lead   lead"
+      "hiring site";
+  }
+
+  .skills-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 700px) {
@@ -544,6 +659,18 @@ img {
   .edu-grid,
   .skills-grid {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  .bento {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "lead"
+      "hiring"
+      "site";
+  }
+
+  .card-langs {
+    grid-column: auto;
   }
 
   /* nav links scroll sideways instead of wrapping into a block */
@@ -577,6 +704,7 @@ img {
   #about,
   #education,
   #experience,
+  #projects,
   #skills,
   #contact {
     scroll-margin-top: 6rem;
