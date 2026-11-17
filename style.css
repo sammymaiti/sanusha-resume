@@ -1,39 +1,58 @@
 /* ==========================================================
    Sanusha K B - resume
    Idea: a CV set like an operations record, in two colours
-   that pull against each other: navy ink taken from her
-   printed resume, and rose pink as the brand colour. Pastel
-   tints of the same family separate the skill groups.
+   that pull against each other. Light theme: navy ink from
+   her printed resume with rose pink. Dark theme: black with
+   light pink. Pastel tints separate the skill groups.
    Type: Archivo (variable width) for names, labels and
    headings; Source Serif 4 for reading text.
    ========================================================== */
 
-/* ---------- 1. Tokens ---------- */
+/* ---------- 1. Tokens ----------
+   Every colour that changes between themes is written as
+   light-dark(light, dark). Flipping color-scheme on :root
+   (system setting, or the Auto / Light / Dark switch below)
+   flips the whole palette, scrollbars and form controls included. */
 :root {
+  color-scheme: light dark;
+
   /* colour: navy */
-  --ink: #13283e;          /* navy from the printed resume */
-  --ink-soft: #2c4560;
-  --text: #22303f;
-  --muted: #5a5568;        /* 6.5:1 on blush, 7.2:1 on white */
+  --navy: #13283e;                              /* navy from the printed resume */
+  --navy-edge: light-dark(#13283e, #2f4a6b);
+  --ink: light-dark(#13283e, #fbe9ef);          /* headings */
+  --ink-soft: light-dark(#2c4560, #e3cfd7);
+  --text: light-dark(#22303f, #ece6e9);
+  --muted: light-dark(#5a5568, #b0a6ab);
   --on-ink: #e9eff5;
-  --on-ink-muted: #b4c4d4; /* 8.4:1 on ink */
+  --on-ink-muted: #b4c4d4;                      /* 8.4:1 on navy */
 
   /* colour: rose */
-  --paper: #fdf2f5;        /* blush page */
-  --surface: #ffffff;
-  --line: #efd3dc;
-  --rose-50: #fde9ef;
-  --rose-100: #f8d7e2;     /* hero band */
-  --signal: #e0457b;       /* rose: markers, underlines, progress, focus */
-  --rose-600: #b8295f;     /* lead project tile, white text 6.0:1 */
-  --signal-text: #a8245a;  /* rose for text: 6.9:1 on white, 5.2:1 on rose-100 */
-  --rose-on-ink: #ff9fc0;  /* 7.8:1 on ink */
+  --paper: light-dark(#fdf2f5, #0b0b0d);        /* blush page / black */
+  --surface: light-dark(#ffffff, #161618);
+  --line: light-dark(#efd3dc, #2e2a2d);
+  --rose-50: light-dark(#fde9ef, #2a1d24);
+  --rose-100: light-dark(#f8d7e2, #f6c6d6);     /* hero band: light pink in both themes */
+  --signal: light-dark(#e0457b, #f49ab8);       /* markers, underlines, progress, focus */
+  --rose-600: #b8295f;                          /* lead project tile, white text 6.0:1 */
+  --signal-text: light-dark(#a8245a, #f7b6cb);  /* rose for text */
+  --rose-on-ink: #ff9fc0;                       /* 7.8:1 on navy */
 
-  /* colour: pastel set for skill groups */
-  --tint-rose: #fde9ef;
-  --tint-lilac: #ece6f7;
-  --tint-sky: #e1ebf6;
-  --tint-peach: #fde4d8;
+  /* colour: contact footer - navy in light, light pink in dark */
+  --foot-bg: light-dark(#13283e, #f6c6d6);
+  --foot-text: light-dark(#e9eff5, #0b0b0d);
+  --foot-muted: light-dark(#b4c4d4, #3a2f35);
+  --foot-head: light-dark(#ff9fc0, #8f1f4b);
+  --foot-underline: light-dark(#e0457b, #b8295f);
+
+  /* colour: pastel set for skill groups, with matching edges */
+  --tint-rose: light-dark(#fde9ef, #1d1418);
+  --tint-lilac: light-dark(#ece6f7, #18151f);
+  --tint-sky: light-dark(#e1ebf6, #121820);
+  --tint-peach: light-dark(#fde4d8, #1f1714);
+  --tint-rose-edge: light-dark(#f2c4d4, #4a2a38);
+  --tint-lilac-edge: light-dark(#d9cdee, #352d44);
+  --tint-sky-edge: light-dark(#c8d8ea, #26354a);
+  --tint-peach-edge: light-dark(#f4cbb7, #45302a);
 
   /* type */
   --font-ui: "Archivo", "Helvetica Neue", Arial, sans-serif;
@@ -50,6 +69,15 @@
   --radius-card: 10px;
   --radius-photo: 6px;
   --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* the theme switch: no JavaScript, just :has() on the checked radio */
+:root:has(#theme-light:checked) {
+  color-scheme: light;
+}
+
+:root:has(#theme-dark:checked) {
+  color-scheme: dark;
 }
 
 /* width of the fade on the phone nav row; animated by its own scroll
@@ -153,7 +181,7 @@ img {
 
 ::selection {
   background: color-mix(in srgb, var(--signal) 28%, white);
-  color: var(--ink);
+  color: var(--navy);
 }
 
 /* ---------- 3. ID selectors: one-off page regions ---------- */
@@ -173,8 +201,8 @@ img {
 }
 
 #contact {
-  background: var(--ink);
-  color: var(--on-ink);
+  background: var(--foot-bg);
+  color: var(--foot-text);
 }
 
 /* ---------- 4. Navigation (Flexbox) ---------- */
@@ -230,7 +258,46 @@ img {
 .nav-links {
   display: flex;
   gap: 0.25rem;
+  margin-inline-start: auto;
   list-style: none;
+}
+
+/* Auto / Light / Dark: three radios styled as a segmented control */
+.theme-switch {
+  display: flex;
+  flex-shrink: 0;
+  gap: 2px;
+  padding: 3px;
+  border-radius: 8px;
+  background: var(--rose-50);
+}
+
+.theme-switch input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.theme-switch label {
+  padding: 0.25rem 0.55rem;
+  border-radius: 6px;
+  color: var(--ink-soft);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 160ms var(--ease), color 160ms var(--ease);
+}
+
+.theme-switch input:checked + label {
+  background: var(--surface);
+  color: var(--signal-text);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.14);
+}
+
+.theme-switch input:focus-visible + label {
+  outline: 2px solid var(--signal);
+  outline-offset: 1px;
 }
 
 .nav-links a {
@@ -254,40 +321,99 @@ img {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 17rem;
   grid-template-areas:
-    "text  photo"
-    "goal  photo";
-  align-items: start;
+    "text  text"
+    "goal  photo"
+    "facts facts";
+  align-items: end;
   gap: 2.5rem 4rem;
   max-width: var(--page);
   margin-inline: auto;
-  padding: clamp(3rem, 8vw, 6.5rem) var(--gutter) clamp(2.5rem, 6vw, 4.5rem);
+  padding: clamp(2rem, 5vw, 4rem) var(--gutter) clamp(2.5rem, 6vw, 4.5rem);
   /* full-bleed rose band behind a centred grid: border-image paints
      outward 100vw on each side without adding a wrapper element */
   border-image: linear-gradient(var(--rose-100) 0 0) fill 0 / / 0 100vw;
+  /* the band stays light pink in both themes, so its text stays dark */
+  --ink: light-dark(#13283e, #0b0b0d);
+  --ink-soft: light-dark(#2c4560, #2a2226);
+  --text: light-dark(#22303f, #141214);
+  --muted: light-dark(#5a5568, #4a3f45);
+  --surface: light-dark(#ffffff, #fff4f7);
+  --line: light-dark(#efd3dc, #e7b3c5);
+  --signal: light-dark(#e0457b, #b8295f);
+  --signal-text: light-dark(#a8245a, #8f1f4b);
+  color: var(--text);
 }
 
 .intro-text {
   grid-area: text;
 }
 
-.intro h1 {
-  font-size: var(--step-3);
-  font-stretch: 122%;
-  font-weight: 800;
-  letter-spacing: -0.012em;
-  line-height: 0.95;
-}
-
-.intro-role {
-  margin-block: 1.4rem 1.6rem;
+.kicker {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-block-end: 1.25rem;
   color: var(--ink-soft);
   font-family: var(--font-ui);
-  font-size: 1.1rem;
-  font-weight: 550;
-  line-height: 1.5;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.kicker::before {
+  content: "";
+  flex: none;
+  width: 0.55em;
+  height: 0.55em;
+  background: var(--signal-text);
+}
+
+/* display headline: one sentence over three lines; each line rises
+   out of its own mask on load, a beat after the one above */
+.display {
+  font-size: clamp(2.7rem, 1.4rem + 4.6vw, 5.6rem);
+  font-stretch: 100%;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  line-height: 0.98;
+}
+
+.display .line {
+  display: block;
+  overflow: hidden;
+  padding-block-end: 0.06em;
+}
+
+.display .line:first-child {
+  font-stretch: 122%;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.display .line > span {
+  display: block;
+  animation: rise 1.1s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.display .line:nth-child(2) > span {
+  animation-delay: 0.12s;
+}
+
+.display .line:nth-child(3) > span {
+  animation-delay: 0.24s;
+}
+
+.line-accent {
+  color: var(--signal-text);
+}
+
+@keyframes rise {
+  from {
+    transform: translateY(105%);
+  }
 }
 
 .intro-lede {
+  grid-area: lede;
   max-width: 38em;
   font-size: 1.25rem;
   line-height: 1.55;
@@ -295,11 +421,50 @@ img {
 
 .intro-photo {
   grid-area: photo;
+  align-self: end;
+  justify-self: end;
   width: 100%;
+  max-width: 15rem;
   aspect-ratio: 308 / 337;
   object-fit: cover;
   border-radius: var(--radius-photo);
   background: var(--line);
+}
+
+/* facts row: three true facts, ruled like a spec sheet */
+.facts {
+  grid-area: facts;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 0;
+  border-block-start: 1px solid color-mix(in srgb, var(--ink) 20%, transparent);
+}
+
+.facts div {
+  padding-block-start: 1.1rem;
+  padding-inline-end: 1.5rem;
+}
+
+.facts div + div {
+  padding-inline-start: 1.5rem;
+  border-inline-start: 1px solid color-mix(in srgb, var(--ink) 20%, transparent);
+}
+
+.facts dt {
+  color: var(--muted);
+  font-family: var(--font-ui);
+  font-size: var(--small);
+  font-weight: 600;
+}
+
+.facts dd {
+  margin: 0.25rem 0 0;
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 1.1rem;
+  font-stretch: 104%;
+  font-weight: 650;
+  line-height: 1.35;
 }
 
 .objective {
@@ -343,6 +508,15 @@ img {
   background: var(--surface);
 }
 
+.card {
+  transition: border-color 200ms var(--ease);
+}
+
+.card:hover,
+.skills-grid .card:hover {
+  border-color: color-mix(in srgb, var(--signal) 60%, var(--line));
+}
+
 .card h3 + p,
 .card h3 + ul {
   margin-block-start: 0.5rem;
@@ -383,7 +557,7 @@ img {
   grid-column: 1 / -1;
   padding-block: clamp(1.5rem, 3.5vw, 2.25rem);
   background: var(--tint-rose);
-  border-color: #f2c4d4;
+  border-color: var(--tint-rose-edge);
 }
 
 .edu-main h3 {
@@ -417,7 +591,6 @@ img {
 }
 
 .job-duties {
-  margin-block-start: 1.1rem;
   list-style: none;
 }
 
@@ -442,21 +615,35 @@ img {
 }
 
 @container (min-width: 40rem) {
-  .job {
-    display: grid;
-    grid-template-columns: 15rem minmax(0, 1fr);
+  .job .front {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     gap: 2.5rem;
   }
 
-  .job-duties {
+  /* on wide cards the duties pop up in two columns, so the card stays short */
+  .job .more.job-duties {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-content: center;
+    gap: 0.9rem 2.5rem;
+  }
+
+  .job .more.job-duties li + li {
     margin-block-start: 0;
   }
 }
 
+.summary {
+  font-size: 1.15rem;
+  line-height: 1.45;
+}
+
 /* Centurion Robotics: the navy card */
 .job-current {
-  border-color: var(--ink);
-  background: var(--ink);
+  border-color: var(--navy-edge);
+  background: var(--navy);
   color: var(--on-ink);
   padding: clamp(1.5rem, 3.5vw, 2.5rem);
 }
@@ -479,9 +666,7 @@ img {
 .bento {
   display: grid;
   grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
-  grid-template-areas:
-    "lead hiring"
-    "lead site";
+  grid-template-areas: "lead site";
   gap: 1rem;
 }
 
@@ -493,6 +678,22 @@ img {
 
 .tile .when {
   margin-block-end: 0;
+}
+
+.tile .front {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  height: 100%;
+}
+
+.tile .hint {
+  margin-block-start: auto;
+  padding-block-start: 0.6rem;
+}
+
+.tile.flip {
+  min-height: 12rem;
 }
 
 .tile-lead {
@@ -522,14 +723,10 @@ img {
   max-width: 34em;
 }
 
-.tile-hiring {
-  grid-area: hiring;
-}
-
 .tile-site {
   grid-area: site;
   background: var(--tint-lilac);
-  border-color: #d9cdee;
+  border-color: var(--tint-lilac-edge);
 }
 
 /* the four areas under her, as a small 2 x 2 table of cells */
@@ -552,6 +749,28 @@ img {
   font-weight: 650;
 }
 
+/* one big true number instead of a paragraph */
+.big-fact {
+  margin-block-start: auto;
+  color: var(--muted);
+  font-family: var(--font-ui);
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.big-fact strong {
+  display: block;
+  color: var(--signal-text);
+  font-size: clamp(3.5rem, 2.5rem + 3vw, 5.5rem);
+  font-stretch: 120%;
+  font-weight: 800;
+  line-height: 0.9;
+}
+
+.tile-site .hint {
+  margin-block-start: 0.4rem;
+}
+
 .tile-link {
   margin-block-start: auto;
   padding-block-start: 0.4rem;
@@ -562,58 +781,149 @@ img {
 /* Skills: four groups and languages; languages take the wider slot */
 .skills-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1rem;
 }
 
 .card-langs {
-  grid-column: span 2;
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 2rem;
+}
+
+/* skill groups: just the name, big; the list pops up over the tile */
+.skill-tile .front {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 8.5rem;
+}
+
+.skill-tile h3 {
+  font-size: clamp(1.3rem, 1rem + 0.8vw, 1.6rem);
+  font-stretch: 112%;
+  font-weight: 750;
+}
+
+.skill-tile .skill-list {
+  font-size: 1rem;
 }
 
 /* each skill group gets its own tint from the pastel set */
 .skills-grid .card:nth-child(1) {
   background: var(--tint-rose);
-  border-color: #f2c4d4;
+  border-color: var(--tint-rose-edge);
 }
 
 .skills-grid .card:nth-child(2) {
   background: var(--tint-lilac);
-  border-color: #d9cdee;
+  border-color: var(--tint-lilac-edge);
 }
 
 .skills-grid .card:nth-child(3) {
   background: var(--tint-sky);
-  border-color: #c8d8ea;
+  border-color: var(--tint-sky-edge);
 }
 
 .skills-grid .card:nth-child(4) {
   background: var(--tint-peach);
-  border-color: #f4cbb7;
+  border-color: var(--tint-peach-edge);
 }
 
-.skill-list {
-  list-style: none;
-}
-
-.card-langs .lang-list {
-  columns: 2;
-  column-gap: 2rem;
-}
-
-.skill-list li,
-.lang-list li {
-  padding-block: 0.55rem;
-  border-block-end: 1px solid color-mix(in srgb, var(--ink) 12%, transparent);
-  break-inside: avoid;
-}
-
+.skill-list,
 .lang-list {
+  display: grid;
+  gap: 0.3rem;
   list-style: none;
+  line-height: 1.45;
 }
 
-.skill-list li:last-child,
-.lang-list li:last-child {
-  border-block-end: 0;
+/* languages: round badges; the full name pops up on hover or tap */
+.card-langs .lang-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.lang-list li {
+  position: relative;
+  outline-offset: 3px;
+}
+
+.lang-list li:focus-visible {
+  outline: 3px solid var(--signal);
+  border-radius: 50%;
+}
+
+.code {
+  display: grid;
+  place-items: center;
+  width: 3.4rem;
+  height: 3.4rem;
+  border: 1.5px solid var(--tint-rose-edge);
+  border-radius: 50%;
+  background: var(--tint-rose);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 0.95rem;
+  font-stretch: 110%;
+  font-weight: 750;
+  cursor: default;
+  transition: background-color 200ms var(--ease), color 200ms var(--ease);
+}
+
+/* French is basic, so its ring is dashed */
+.lang-basic .code {
+  border-style: dashed;
+  border-color: var(--signal);
+  background: transparent;
+}
+
+.tip {
+  position: absolute;
+  inset-block-end: calc(100% + 0.5rem);
+  inset-inline-start: 50%;
+  padding: 0.3rem 0.6rem;
+  border-radius: 6px;
+  background: var(--navy);
+  color: #ffffff;
+  font-family: var(--font-ui);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  white-space: nowrap;
+  opacity: 0;
+  translate: -50% 0.3rem;
+  pointer-events: none;
+  transition: opacity 180ms var(--ease), translate 180ms var(--ease);
+}
+
+.lang-list li:is(:hover, :focus) .tip {
+  opacity: 1;
+  translate: -50% 0;
+}
+
+.lang-list li:is(:hover, :focus) .code {
+  background: var(--signal);
+  color: #ffffff;
+}
+
+.skill-list li {
+  position: relative;
+  padding-inline-start: 0.95rem;
+}
+
+/* a small rose dot in front of each item */
+.skill-list li::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 0;
+  top: 0.62em;
+  width: 0.32em;
+  height: 0.32em;
+  border-radius: 50%;
+  background: var(--signal);
 }
 
 .level {
@@ -623,13 +933,114 @@ img {
   font-size: var(--small);
 }
 
+/* ---------- 7b. Reveal cards: short front, detail on hover or tap ----------
+   Every .flip card shows a short front. The detail (.more) stays in the
+   page for screen readers; it is only moved out of sight. */
+.flip {
+  position: relative;
+  cursor: default;
+}
+
+.flip:focus-visible {
+  outline: 3px solid var(--signal);
+  outline-offset: 3px;
+}
+
+/* a round + in the corner says "there is more here"; no words needed */
+.hint {
+  display: inline-flex;
+  margin-block-start: 0.9rem;
+  color: var(--muted);
+}
+
+.hint::before {
+  content: "+";
+  display: grid;
+  place-items: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  border: 1.5px solid currentColor;
+  border-radius: 50%;
+  font-family: var(--font-ui);
+  font-size: 1.05rem;
+  font-weight: 500;
+  line-height: 1;
+  transition: rotate 300ms var(--ease), background-color 200ms var(--ease);
+}
+
+.job-current .hint,
+.tile-lead .hint {
+  color: var(--on-ink-muted);
+}
+
+.tile-lead .hint {
+  color: rgb(255 255 255 / 0.8);
+}
+
+/* mouse and trackpad: the detail slides up over the card */
+@media (hover: hover) {
+  /* front and detail share one grid cell, so the card is always as
+     tall as the taller of the two and the detail can never overflow */
+  .flip {
+    display: grid;
+    overflow: hidden;
+  }
+
+  .flip > .front,
+  .flip > .more {
+    grid-area: 1 / 1;
+  }
+
+  .flip > .more {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.6rem;
+    margin: 0;
+    background: inherit;
+    translate: 0 calc(100% + 3rem);
+    transition: translate 420ms var(--ease);
+  }
+
+  .flip:is(:hover, :focus-within) > .more {
+    translate: 0 0;
+  }
+
+  .flip:is(:hover, :focus-within) .hint::before {
+    rotate: 45deg;
+  }
+}
+
+/* touch screens: tap the card and the detail opens in place */
+@media (hover: none) {
+  .flip .more {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+
+  .flip:focus-within .more {
+    position: static;
+    width: auto;
+    height: auto;
+    clip-path: none;
+    margin-block-start: 1rem;
+  }
+
+  .flip:focus-within .hint::before {
+    rotate: 45deg;
+  }
+}
+
 /* ---------- 8. Contact footer ---------- */
 .site-footer {
   padding: clamp(3rem, 8vw, 5.5rem) max(var(--gutter), calc((100% - var(--page)) / 2 + var(--gutter)));
 }
 
 .site-footer h2 {
-  color: var(--rose-on-ink);
+  color: var(--foot-head);
   font-size: 1rem;
   font-stretch: 100%;
   font-weight: 600;
@@ -638,26 +1049,26 @@ img {
 .footer-email {
   display: inline-block;
   margin-block: 0.75rem 1.5rem;
-  color: #ffffff;
+  color: var(--foot-text);
   font-family: var(--font-ui);
   font-size: clamp(1.4rem, 0.8rem + 3.4vw, 3.2rem);
   font-stretch: 110%;
   font-weight: 700;
   overflow-wrap: anywhere;
-  text-decoration-color: var(--signal);
+  text-decoration-color: var(--foot-underline);
 }
 
 .contact-list {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem 2.5rem;
-  color: var(--on-ink-muted);
+  color: var(--foot-muted);
   font-family: var(--font-ui);
   list-style: none;
 }
 
 .contact-list a {
-  color: var(--on-ink);
+  color: var(--foot-text);
 }
 
 /* ---------- 9. Responsive ---------- */
@@ -676,63 +1087,26 @@ img {
   }
 
   .bento {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    grid-template-areas:
-      "lead   lead"
-      "hiring site";
-  }
-
-  .skills-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (max-width: 700px) {
-  .intro {
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-areas:
-      "photo"
-      "text"
-      "goal";
-  }
-
-  .intro-photo {
-    width: 10rem;
-  }
-
-  .intro h1 {
-    font-size: clamp(2.1rem, 11vw, 3rem);
-    font-stretch: 108%;
-    white-space: nowrap;
-  }
-
-  .edu-grid,
-  .skills-grid {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .bento {
     grid-template-columns: minmax(0, 1fr);
     grid-template-areas:
       "lead"
-      "hiring"
       "site";
   }
 
-  .card-langs {
-    grid-column: auto;
+  .skills-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   /* nav links scroll sideways instead of wrapping into a block */
   .nav {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.35rem;
-    padding-block: 0.7rem 0.45rem;
+    flex-wrap: wrap;
+    gap: 0.35rem 1rem;
+    padding-block: 0.6rem 0.45rem;
   }
 
   .nav-links {
-    width: calc(100% + 2 * var(--gutter));
+    order: 3;
+    flex: 0 0 calc(100% + 2 * var(--gutter));
     margin-inline: calc(-1 * var(--gutter));
     padding-inline: calc(var(--gutter) - 0.7rem);
     overflow-x: auto;
@@ -761,9 +1135,148 @@ img {
   }
 }
 
+@media (max-width: 700px) {
+  .intro {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "photo"
+      "text"
+      "goal"
+      "facts";
+    align-items: start;
+  }
+
+  .facts {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .facts div + div {
+    padding-inline-start: 0;
+    border-inline-start: 0;
+    border-block-start: 1px solid color-mix(in srgb, var(--ink) 20%, transparent);
+  }
+
+  .facts div {
+    padding-block: 0.8rem;
+  }
+
+  .intro-photo {
+    justify-self: start;
+    width: 10rem;
+  }
+
+  .display {
+    font-size: clamp(2.1rem, 10vw, 3rem);
+  }
+
+  .display .line:first-child {
+    font-stretch: 108%;
+    white-space: nowrap;
+  }
+
+  .edu-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .bento {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "lead"
+      "site";
+  }
+
+  .skill-tile .front {
+    min-height: 6.5rem;
+  }
+}
+
+/* ---------- 10. Scroll-driven behaviour (no JavaScript) ---------- */
+
+/* scroll-spy: each section publishes a view timeline, measured against
+   a thin line 45% down the screen; its nav link is lit while the
+   section crosses that line */
+@supports (timeline-scope: --a) {
+  html {
+    timeline-scope: --about, --education, --experience, --projects, --skills, --contact;
+  }
+
+  #about { view-timeline-name: --about; }
+  #education { view-timeline-name: --education; }
+  #experience { view-timeline-name: --experience; }
+  #projects { view-timeline-name: --projects; }
+  #skills { view-timeline-name: --skills; }
+  #contact { view-timeline-name: --contact; }
+
+  #about,
+  #education,
+  #experience,
+  #projects,
+  #skills,
+  #contact {
+    view-timeline-axis: block;
+    view-timeline-inset: 45% 54%;
+  }
+
+  .nav-links a {
+    animation: spy linear none;
+    animation-range: cover;
+  }
+
+  .nav-links a[href="#about"] { animation-timeline: --about; }
+  .nav-links a[href="#education"] { animation-timeline: --education; }
+  .nav-links a[href="#experience"] { animation-timeline: --experience; }
+  .nav-links a[href="#projects"] { animation-timeline: --projects; }
+  .nav-links a[href="#skills"] { animation-timeline: --skills; }
+  .nav-links a[href="#contact"] { animation-timeline: --contact; }
+
+  @keyframes spy {
+    from,
+    to {
+      background: var(--rose-50);
+      color: var(--signal-text);
+    }
+  }
+}
+
+/* the big name narrows along Archivo's width axis as you scroll past,
+   and the small name in the bar fades in to take over */
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .display .line:first-child {
+      animation: name-narrow linear both;
+      animation-timeline: scroll(root block);
+      animation-range: 0px 420px;
+    }
+
+    .nav-brand {
+      animation: brand-in linear both;
+      animation-timeline: scroll(root block);
+      animation-range: 160px 420px;
+    }
+  }
+
+  @keyframes name-narrow {
+    to {
+      font-stretch: 96%;
+      letter-spacing: -0.02em;
+    }
+  }
+
+  @keyframes brand-in {
+    from {
+      opacity: 0;
+      translate: 0 0.35em;
+    }
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+
+  .display .line > span {
+    animation: none;
   }
 
   *,
@@ -773,8 +1286,13 @@ img {
   }
 }
 
-/* ---------- 10. Print: the site doubles as a paper CV ---------- */
+/* ---------- 11. Print: the site doubles as a paper CV ---------- */
 @media print {
+  :root,
+  :root:has(#theme-dark:checked) {
+    color-scheme: light;
+  }
+
   @page {
     margin: 14mm;
   }
@@ -784,8 +1302,42 @@ img {
     font-size: 10.5pt;
   }
 
-  .site-header {
+  .site-header,
+  .hint {
     display: none;
+  }
+
+  .flip .more {
+    position: static;
+    width: auto;
+    height: auto;
+    clip-path: none;
+    translate: none;
+    margin-block-start: 0.6rem;
+    padding: 0;
+  }
+
+  .tip {
+    position: static;
+    opacity: 1;
+    translate: none;
+    padding: 0;
+    background: none;
+    color: var(--text);
+  }
+
+  .code {
+    display: none;
+  }
+
+  .nav-brand,
+  .display .line,
+  .display .line > span {
+    animation: none;
+  }
+
+  .intro {
+    gap: 1rem 2rem;
   }
 
   h2,

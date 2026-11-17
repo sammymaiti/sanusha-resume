@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=Source+Serif+4:opsz,wght@8..60,400..600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=7">
+  <link rel="stylesheet" href="style.css?v=17">
 </head>
 <body>
 
@@ -23,6 +23,14 @@
         <li><a href="#skills">Skills</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
+      <div class="theme-switch" role="radiogroup" aria-label="Colour theme">
+        <input type="radio" name="theme" id="theme-auto" checked>
+        <label for="theme-auto">Auto</label>
+        <input type="radio" name="theme" id="theme-light">
+        <label for="theme-light">Light</label>
+        <input type="radio" name="theme" id="theme-dark">
+        <label for="theme-dark">Dark</label>
+      </div>
     </nav>
   </header>
 
@@ -30,14 +38,37 @@
 
     <section id="about" class="intro">
       <div class="intro-text">
-        <h1>Sanusha K&nbsp;B</h1>
-        <p class="intro-role">Co-founder &amp; COO, Centurion Robotics<br>BBA in Digital Business and Entrepreneurship, IIM Bangalore</p>
-        <p class="intro-lede">I co-founded and run operations at an autonomous-drone startup while studying business at IIM Bangalore. I oversee R&amp;D, manufacturing and logistics day to day, and I am organized, adaptable and comfortable leading a team.</p>
+        <p class="kicker">BBA in Digital Business and Entrepreneurship, IIM Bangalore</p>
+        <h1 class="display">
+          <span class="line"><span>Sanusha K&nbsp;B</span></span>
+          <span class="line"><span>runs operations</span></span>
+          <span class="line line-accent"><span>at Centurion Robotics.</span></span>
+        </h1>
       </div>
       <img src="images/sanusha.jpg" alt="Portrait of Sanusha K B" class="intro-photo" width="308" height="337">
-      <article class="card objective">
-        <h2>Career objective</h2>
-        <p>To use my business studies and hands-on experience as a startup co-founder in growth-oriented organizations, and to keep building my leadership, operational and strategic skills in business operations, marketing or management.</p>
+      <dl class="facts">
+        <div>
+          <dt>Role</dt>
+          <dd>Co-founder &amp; COO</dd>
+        </div>
+        <div>
+          <dt>Studying at</dt>
+          <dd>IIM Bangalore</dd>
+        </div>
+        <div>
+          <dt>Languages</dt>
+          <dd>Six spoken</dd>
+        </div>
+      </dl>
+      <article class="card objective flip" tabindex="0">
+        <div class="front">
+          <h2>Career objective</h2>
+          <p class="summary">Operations, marketing or management</p>
+          <span class="hint" aria-hidden="true"></span>
+        </div>
+        <div class="more">
+          <p>I co-founded an autonomous-drone startup and run its operations while studying business at IIM Bangalore. I want to bring that hands-on experience to growth-oriented organizations, and keep building my leadership, operational and strategic skills.</p>
+        </div>
       </article>
     </section>
 
@@ -47,7 +78,7 @@
         <article class="card edu-main">
           <p class="when when-now">Current</p>
           <h3>Indian Institute of Management Bangalore</h3>
-          <p>BBA in Digital Business and Entrepreneurship (BBA DBE)</p>
+          <p>BBA DBE</p>
         </article>
         <article class="card">
           <p class="when">2020 &ndash; 2022</p>
@@ -65,26 +96,36 @@
     <section id="experience" class="section">
       <h2>Experience</h2>
       <div class="jobs">
-        <article class="card job job-current">
-          <div class="job-meta">
-            <p class="when when-now">2023 &ndash; present</p>
-            <h3>Centurion Robotics</h3>
-            <p class="job-role">Co-founder &amp; COO</p>
+        <article class="card job job-current flip" tabindex="0">
+          <div class="front">
+            <div class="job-meta">
+              <p class="when when-now">2023 &ndash; present</p>
+              <h3>Centurion Robotics</h3>
+              <p class="job-role">Co-founder &amp; COO</p>
+            </div>
+            <div class="job-sum">
+              <span class="hint" aria-hidden="true"></span>
+            </div>
           </div>
-          <ul class="job-duties">
+          <ul class="more job-duties">
             <li>Co-founded and manage operations of a startup focused on autonomous drones.</li>
             <li>Oversee daily functions including R&amp;D, manufacturing and logistics.</li>
             <li>Coordinate with teams to ensure smooth execution and regulatory compliance.</li>
             <li>Support strategic planning and drive operational efficiency across the company.</li>
           </ul>
         </article>
-        <article class="card job">
-          <div class="job-meta">
-            <p class="when">2021 &ndash; 2022</p>
-            <h3>SocioBlend</h3>
-            <p class="job-role">HR Intern, Recruitment</p>
+        <article class="card job flip" tabindex="0">
+          <div class="front">
+            <div class="job-meta">
+              <p class="when">2021 &ndash; 2022</p>
+              <h3>SocioBlend</h3>
+              <p class="job-role">HR Intern, Recruitment</p>
+            </div>
+            <div class="job-sum">
+              <span class="hint" aria-hidden="true"></span>
+            </div>
           </div>
-          <ul class="job-duties">
+          <ul class="more job-duties">
             <li>Reached out to potential candidates and conducted initial screening calls.</li>
             <li>Assisted in onboarding new interns and maintained communication during recruitment.</li>
             <li>Helped expand the intern team by coordinating outreach and managing applicant data.</li>
@@ -96,27 +137,33 @@
     <section id="projects" class="section">
       <h2>Projects</h2>
       <div class="bento">
-        <article class="card tile tile-lead">
-          <p class="when when-now">Centurion Robotics &middot; 2023 &ndash; present</p>
-          <h3>Running operations for a drone startup</h3>
-          <p>Co-founded Centurion Robotics and manage its operations, coordinating the teams behind an autonomous-drone product and supporting the company's strategic planning.</p>
-          <ul class="ops" aria-label="Areas she oversees">
-            <li>R&amp;D</li>
-            <li>Manufacturing</li>
-            <li>Logistics</li>
-            <li>Regulatory compliance</li>
-          </ul>
+        <article class="card tile tile-lead flip" tabindex="0">
+          <div class="front">
+            <p class="when when-now">Centurion Robotics &middot; 2023 &ndash; present</p>
+            <h3>Running operations for a drone startup</h3>
+            <ul class="ops" aria-label="Areas she oversees">
+              <li>R&amp;D</li>
+              <li>Manufacturing</li>
+              <li>Logistics</li>
+              <li>Regulatory compliance</li>
+            </ul>
+            <span class="hint" aria-hidden="true"></span>
+          </div>
+          <div class="more">
+            <p>Co-founded Centurion Robotics and manage its operations: coordinating the teams behind an autonomous-drone product, keeping work compliant with regulations, and supporting the company's strategic planning.</p>
+          </div>
         </article>
-        <article class="card tile tile-hiring">
-          <p class="when">SocioBlend &middot; 2021 &ndash; 2022</p>
-          <h3>Expanding the intern team</h3>
-          <p>Outreach, first-round screening calls, applicant data and onboarding for a growing intern team.</p>
-        </article>
-        <article class="card tile tile-site">
-          <p class="when">2026</p>
-          <h3>This resume website</h3>
-          <p>Hand-written HTML and CSS, no frameworks or JavaScript, published with GitHub Pages.</p>
-          <p class="tile-link"><a href="https://github.com/sammymaiti/sanusha-resume">View the code</a></p>
+        <article class="card tile tile-site flip" tabindex="0">
+          <div class="front">
+            <p class="when">2026</p>
+            <h3>This resume website</h3>
+            <p class="big-fact"><strong>0</strong> lines of JavaScript</p>
+            <span class="hint" aria-hidden="true"></span>
+          </div>
+          <div class="more">
+            <p>Hand-written HTML and CSS with no frameworks or JavaScript, published with GitHub Pages.</p>
+            <p class="tile-link"><a href="https://github.com/sammymaiti/sanusha-resume">View the code</a></p>
+          </div>
         </article>
       </div>
     </section>
@@ -124,9 +171,12 @@
     <section id="skills" class="section">
       <h2>Skills</h2>
       <div class="skills-grid">
-        <article class="card">
-          <h3>Operations</h3>
-          <ul class="skill-list">
+        <article class="card skill-tile flip" tabindex="0">
+          <div class="front">
+            <h3>Operations</h3>
+            <span class="hint" aria-hidden="true"></span>
+          </div>
+          <ul class="more skill-list">
             <li>Operational planning</li>
             <li>R&amp;D, manufacturing and logistics coordination</li>
             <li>Regulatory compliance</li>
@@ -134,27 +184,36 @@
             <li>Strategic planning support</li>
           </ul>
         </article>
-        <article class="card">
-          <h3>People</h3>
-          <ul class="skill-list">
+        <article class="card skill-tile flip" tabindex="0">
+          <div class="front">
+            <h3>People</h3>
+            <span class="hint" aria-hidden="true"></span>
+          </div>
+          <ul class="more skill-list">
             <li>Leadership and team management</li>
             <li>Recruitment and screening</li>
             <li>Onboarding</li>
             <li>Communication</li>
           </ul>
         </article>
-        <article class="card">
-          <h3>Ways of working</h3>
-          <ul class="skill-list">
+        <article class="card skill-tile flip" tabindex="0">
+          <div class="front">
+            <h3>Ways of working</h3>
+            <span class="hint" aria-hidden="true"></span>
+          </div>
+          <ul class="more skill-list">
             <li>Problem solving</li>
             <li>Critical thinking</li>
             <li>Time management</li>
             <li>Adaptability</li>
           </ul>
         </article>
-        <article class="card">
-          <h3>Digital</h3>
-          <ul class="skill-list">
+        <article class="card skill-tile flip" tabindex="0">
+          <div class="front">
+            <h3>Digital</h3>
+            <span class="hint" aria-hidden="true"></span>
+          </div>
+          <ul class="more skill-list">
             <li>HTML and CSS</li>
             <li>Responsive web design</li>
             <li>Git and GitHub Pages</li>
@@ -163,12 +222,12 @@
         <article class="card card-langs">
           <h3>Languages</h3>
           <ul class="lang-list">
-            <li>English</li>
-            <li>Hindi</li>
-            <li>Kannada</li>
-            <li>Malayalam</li>
-            <li>Kodava</li>
-            <li>French <span class="level">basics</span></li>
+            <li tabindex="0"><span class="code" aria-hidden="true">EN</span><span class="tip">English</span></li>
+            <li tabindex="0"><span class="code" aria-hidden="true">HI</span><span class="tip">Hindi</span></li>
+            <li tabindex="0"><span class="code" aria-hidden="true">KN</span><span class="tip">Kannada</span></li>
+            <li tabindex="0"><span class="code" aria-hidden="true">ML</span><span class="tip">Malayalam</span></li>
+            <li tabindex="0"><span class="code" aria-hidden="true">KOD</span><span class="tip">Kodava</span></li>
+            <li tabindex="0" class="lang-basic"><span class="code" aria-hidden="true">FR</span><span class="tip">French, basics</span></li>
           </ul>
         </article>
       </div>
