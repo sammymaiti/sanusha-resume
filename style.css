@@ -445,14 +445,71 @@ img {
   margin-block-start: 0.75rem;
 }
 
+/* real logos: Centurion Robotics and IIM Bangalore. Schools without a
+   confirmed official logo get plain initials instead of an imitation */
+.logo-inline {
+  display: inline-block;
+  width: 0.8em;
+  height: 0.8em;
+  margin-inline-end: 0.28em;
+  vertical-align: -0.06em;
+}
+
+.logo-plate {
+  display: inline-flex;
+  margin-block-end: 1.2rem;
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  background: #ffffff;
+}
+
+.logo-plate img {
+  width: auto;
+  height: clamp(2rem, 1.6rem + 1.2vw, 2.75rem);
+}
+
+.monogram {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 2.9rem;
+  height: 2.9rem;
+  margin-block-end: 0.9rem;
+  border: 1px solid var(--tint-rose-edge);
+  border-radius: 50%;
+  background: var(--rose-50);
+  color: var(--signal-text);
+  font-family: var(--font-ui);
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.job-logo {
+  flex: none;
+  width: 3.4rem;
+  height: 3.4rem;
+  margin-block-end: 0.9rem;
+}
+
+.tile-logo {
+  width: 3rem;
+  height: 3rem;
+}
+
+/* the photo is the planet at the centre of the orbit: a circle with a
+   thin inner ring, glowing faintly in her pink */
 .scene-photo {
   grid-area: photo;
   justify-self: center;
-  width: min(40vmin, 17rem);
-  aspect-ratio: 308 / 337;
+  width: min(38vmin, 16rem);
+  aspect-ratio: 1;
   object-fit: cover;
-  border-radius: var(--radius-card);
-  box-shadow: 0 40px 90px -30px rgb(244 154 184 / 0.45);
+  object-position: 50% 24%;
+  border-radius: 50%;
+  outline: 1px solid rgb(244 154 184 / 0.4);
+  outline-offset: 12px;
+  box-shadow: 0 0 0 12px rgb(11 11 13 / 0.35), 0 30px 120px -10px rgb(244 154 184 / 0.4);
   animation: fade-in 1.4s 0.2s var(--ease) both;
 }
 
@@ -728,8 +785,15 @@ img {
   .job .front {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 2.5rem;
+    gap: 1.75rem;
+  }
+
+  .job .front .job-meta {
+    flex: 1;
+  }
+
+  .job .front .job-logo {
+    margin: 0;
   }
 
   /* on wide cards the duties pop up in two columns, so the card stays short */
