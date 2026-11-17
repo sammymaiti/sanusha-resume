@@ -1,27 +1,39 @@
 /* ==========================================================
    Sanusha K B - resume
-   Idea: a CV set like an operations record. Navy ink taken
-   from her printed resume, cool paper, and one accent:
-   aviation safety orange, used only for what is ongoing
-   (current role, current degree) and for interaction.
+   Idea: a CV set like an operations record, in two colours
+   that pull against each other: navy ink taken from her
+   printed resume, and rose pink as the brand colour. Pastel
+   tints of the same family separate the skill groups.
    Type: Archivo (variable width) for names, labels and
    headings; Source Serif 4 for reading text.
    ========================================================== */
 
 /* ---------- 1. Tokens ---------- */
 :root {
-  /* colour */
+  /* colour: navy */
   --ink: #13283e;          /* navy from the printed resume */
   --ink-soft: #2c4560;
   --text: #22303f;
-  --muted: #4f5f70;        /* 6.0:1 on paper */
-  --paper: #f2f5f8;        /* cool, not cream */
-  --surface: #ffffff;
-  --line: #d5dde6;
-  --signal: #e2531f;       /* safety orange: rules, markers, focus */
-  --signal-text: #b23e12;  /* darker orange for text, 5.9:1 on white */
+  --muted: #5a5568;        /* 6.5:1 on blush, 7.2:1 on white */
   --on-ink: #e9eff5;
   --on-ink-muted: #b4c4d4; /* 8.4:1 on ink */
+
+  /* colour: rose */
+  --paper: #fdf2f5;        /* blush page */
+  --surface: #ffffff;
+  --line: #efd3dc;
+  --rose-50: #fde9ef;
+  --rose-100: #f8d7e2;     /* hero band */
+  --signal: #e0457b;       /* rose: markers, underlines, progress, focus */
+  --rose-600: #b8295f;     /* lead project tile, white text 6.0:1 */
+  --signal-text: #a8245a;  /* rose for text: 6.9:1 on white, 5.2:1 on rose-100 */
+  --rose-on-ink: #ff9fc0;  /* 7.8:1 on ink */
+
+  /* colour: pastel set for skill groups */
+  --tint-rose: #fde9ef;
+  --tint-lilac: #ece6f7;
+  --tint-sky: #e1ebf6;
+  --tint-peach: #fde4d8;
 
   /* type */
   --font-ui: "Archivo", "Helvetica Neue", Arial, sans-serif;
@@ -233,8 +245,8 @@ img {
 }
 
 .nav-links a:hover {
-  background: var(--paper);
-  color: var(--ink);
+  background: var(--rose-50);
+  color: var(--signal-text);
 }
 
 /* ---------- 5. About / intro ---------- */
@@ -249,6 +261,9 @@ img {
   max-width: var(--page);
   margin-inline: auto;
   padding: clamp(3rem, 8vw, 6.5rem) var(--gutter) clamp(2.5rem, 6vw, 4.5rem);
+  /* full-bleed rose band behind a centred grid: border-image paints
+     outward 100vw on each side without adding a wrapper element */
+  border-image: linear-gradient(var(--rose-100) 0 0) fill 0 / / 0 100vw;
 }
 
 .intro-text {
@@ -367,6 +382,8 @@ img {
 .edu-main {
   grid-column: 1 / -1;
   padding-block: clamp(1.5rem, 3.5vw, 2.25rem);
+  background: var(--tint-rose);
+  border-color: #f2c4d4;
 }
 
 .edu-main h3 {
@@ -436,7 +453,7 @@ img {
   }
 }
 
-/* Centurion Robotics: the one dark card on the page */
+/* Centurion Robotics: the navy card */
 .job-current {
   border-color: var(--ink);
   background: var(--ink);
@@ -455,7 +472,7 @@ img {
 }
 
 .job-current .when-now {
-  color: #ff9a6b; /* 7.2:1 on ink */
+  color: var(--rose-on-ink);
 }
 
 /* Projects: a bento grid sized by content weight, not filled for its own sake */
@@ -481,9 +498,21 @@ img {
 .tile-lead {
   grid-area: lead;
   padding: clamp(1.5rem, 3.5vw, 2.5rem);
+  border-color: var(--rose-600);
+  background: var(--rose-600);
+  color: #ffffff;
+}
+
+.tile-lead .when-now {
+  color: var(--rose-50);
+}
+
+.tile-lead .when-now::before {
+  background: #ffffff;
 }
 
 .tile-lead h3 {
+  color: #ffffff;
   font-size: clamp(1.5rem, 1.1rem + 1.3vw, 2.1rem);
   font-stretch: 110%;
   max-width: 18ch;
@@ -499,8 +528,8 @@ img {
 
 .tile-site {
   grid-area: site;
-  background: #e6edf4;
-  border-color: #c9d5e1;
+  background: var(--tint-lilac);
+  border-color: #d9cdee;
 }
 
 /* the four areas under her, as a small 2 x 2 table of cells */
@@ -515,8 +544,8 @@ img {
 .ops li {
   padding: 0.85rem 1rem;
   border-radius: 6px;
-  background: var(--paper);
-  color: var(--ink);
+  background: rgb(255 255 255 / 0.14);
+  color: #ffffff;
   font-family: var(--font-ui);
   font-size: 1.05rem;
   font-stretch: 106%;
@@ -541,6 +570,27 @@ img {
   grid-column: span 2;
 }
 
+/* each skill group gets its own tint from the pastel set */
+.skills-grid .card:nth-child(1) {
+  background: var(--tint-rose);
+  border-color: #f2c4d4;
+}
+
+.skills-grid .card:nth-child(2) {
+  background: var(--tint-lilac);
+  border-color: #d9cdee;
+}
+
+.skills-grid .card:nth-child(3) {
+  background: var(--tint-sky);
+  border-color: #c8d8ea;
+}
+
+.skills-grid .card:nth-child(4) {
+  background: var(--tint-peach);
+  border-color: #f4cbb7;
+}
+
 .skill-list {
   list-style: none;
 }
@@ -553,7 +603,7 @@ img {
 .skill-list li,
 .lang-list li {
   padding-block: 0.55rem;
-  border-block-end: 1px solid var(--line);
+  border-block-end: 1px solid color-mix(in srgb, var(--ink) 12%, transparent);
   break-inside: avoid;
 }
 
@@ -579,7 +629,7 @@ img {
 }
 
 .site-footer h2 {
-  color: var(--on-ink-muted);
+  color: var(--rose-on-ink);
   font-size: 1rem;
   font-stretch: 100%;
   font-weight: 600;
@@ -757,8 +807,31 @@ img {
     color: var(--text);
   }
 
-  .job-current h3 {
+  .job-current h3,
+  .tile-lead h3 {
     color: var(--ink);
+  }
+
+  .intro {
+    border-image: none;
+  }
+
+  .tile-lead,
+  .ops li {
+    background: #ffffff;
+    color: var(--text);
+  }
+
+  .ops li {
+    border: 1px solid var(--line);
+  }
+
+  .tile-lead .when-now {
+    color: var(--signal-text);
+  }
+
+  .tile-lead .when-now::before {
+    background: var(--signal);
   }
 
   .job-current .job-role,

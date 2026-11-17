@@ -16,7 +16,7 @@ A responsive resume website built with plain HTML and CSS and published with Git
 - Each section is a two-column grid: the heading sits in a sticky left rail, content on the right
 - Projects use a bento grid sized by content weight, rearranged by `grid-template-areas` at each breakpoint
 - Responsive cards: the experience cards use a container query to switch between stacked and two-column layouts
-- One palette defined as custom properties: navy ink from the printed resume, cool paper, and safety orange used only for current roles and interaction
+- Pink and navy palette defined as custom properties: navy ink from the printed resume, rose pink as the brand colour (hero band, lead project tile, markers, links), and pastel tints (rose, lilac, sky, peach) for the skill groups; every text colour passes WCAG AA
 - Type: Archivo (variable width axis) for headings and labels, Source Serif 4 for reading text, fluid sizes with `clamp()`
 - Element, class and ID selectors, each group labelled in `style.css`
 - Scroll-driven CSS animations (no JavaScript): a reading-progress line under the header, and a fade on the phone nav row that shows only while there is more to scroll
