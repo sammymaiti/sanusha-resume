@@ -14,14 +14,14 @@
   --ink: #13283e;          /* navy from the printed resume */
   --ink-soft: #2c4560;
   --text: #22303f;
-  --muted: #4f5f70;        /* 6.4:1 on paper */
+  --muted: #4f5f70;        /* 6.0:1 on paper */
   --paper: #f2f5f8;        /* cool, not cream */
   --surface: #ffffff;
   --line: #d5dde6;
   --signal: #e2531f;       /* safety orange: rules, markers, focus */
-  --signal-text: #b23e12;  /* darker orange for text, 5.6:1 on white */
+  --signal-text: #b23e12;  /* darker orange for text, 5.9:1 on white */
   --on-ink: #e9eff5;
-  --on-ink-muted: #b4c4d4; /* 8:1 on ink */
+  --on-ink-muted: #b4c4d4; /* 8.4:1 on ink */
 
   /* type */
   --font-ui: "Archivo", "Helvetica Neue", Arial, sans-serif;
@@ -412,7 +412,7 @@ img {
 }
 
 .job-current .when-now {
-  color: #ff9a6b; /* 6.9:1 on ink */
+  color: #ff9a6b; /* 7.2:1 on ink */
 }
 
 /* Skills */
