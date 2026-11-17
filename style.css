@@ -1,372 +1,619 @@
-/* =========================================================
-   Sanusha K B - Resume website
-   Palette: navy (from the original resume), warm sand accent,
-   off-white background. Fonts: Montserrat (headings), Lato (body).
-   ========================================================= */
+/* ==========================================================
+   Sanusha K B - resume
+   Idea: a CV set like an operations record. Navy ink taken
+   from her printed resume, cool paper, and one accent:
+   aviation safety orange, used only for what is ongoing
+   (current role, current degree) and for interaction.
+   Type: Archivo (variable width) for names, labels and
+   headings; Source Serif 4 for reading text.
+   ========================================================== */
 
-/* ---------- Custom properties (consistent colour palette) ---------- */
+/* ---------- 1. Tokens ---------- */
 :root {
-  --navy: #1b3a57;
-  --navy-dark: #12283d;
-  --sand: #c9a46a;
-  --sand-light: #f3ead9;
-  --bg: #f7f8fa;
-  --card: #ffffff;
-  --text: #2b2f36;
-  --muted: #5d6673;
-  --border: #e3e7ec;
-  --radius: 12px;
-  --shadow: 0 2px 10px rgba(18, 40, 61, 0.08);
+  /* colour */
+  --ink: #13283e;          /* navy from the printed resume */
+  --ink-soft: #2c4560;
+  --text: #22303f;
+  --muted: #4f5f70;        /* 6.4:1 on paper */
+  --paper: #f2f5f8;        /* cool, not cream */
+  --surface: #ffffff;
+  --line: #d5dde6;
+  --signal: #e2531f;       /* safety orange: rules, markers, focus */
+  --signal-text: #b23e12;  /* darker orange for text, 5.6:1 on white */
+  --on-ink: #e9eff5;
+  --on-ink-muted: #b4c4d4; /* 8:1 on ink */
+
+  /* type */
+  --font-ui: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --font-read: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --step-0: 1.125rem;                          /* body, 18px */
+  --step-1: 1.3rem;                            /* h3 */
+  --step-2: clamp(1.6rem, 1.2rem + 1.4vw, 2.2rem);   /* h2 */
+  --step-3: clamp(2.9rem, 1.6rem + 5.6vw, 5.4rem);   /* name */
+  --small: 0.9375rem;
+
+  /* space and shape */
+  --page: 72rem;
+  --gutter: clamp(1.25rem, 4vw, 2.75rem);
+  --radius-card: 10px;
+  --radius-photo: 6px;
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
-/* ---------- Element selectors ---------- */
-* {
+/* ---------- 2. Element selectors: the base document ---------- */
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 72px; /* keeps headings clear of the sticky nav */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
   margin: 0;
-  font-family: "Lato", "Helvetica Neue", Arial, sans-serif;
-  font-size: 1.0625rem;
-  line-height: 1.65;
+  background: var(--paper);
   color: var(--text);
-  background: var(--bg);
+  font-family: var(--font-read);
+  font-size: var(--step-0);
+  font-optical-sizing: auto;
+  line-height: 1.6;
 }
 
 h1,
 h2,
 h3 {
-  font-family: "Montserrat", "Helvetica Neue", Arial, sans-serif;
-  color: var(--navy);
-  line-height: 1.25;
-  margin: 0 0 0.5rem;
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--font-ui);
+  line-height: 1.12;
+  text-wrap: balance;
 }
 
 h2 {
-  font-size: 1.75rem;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  margin-bottom: 1.5rem;
-}
-
-/* short sand-coloured rule under each section heading */
-h2::after {
-  content: "";
-  display: block;
-  width: 56px;
-  height: 4px;
-  margin-top: 0.5rem;
-  border-radius: 2px;
-  background: var(--sand);
+  font-size: var(--step-2);
+  font-stretch: 112%;
+  font-weight: 700;
 }
 
 h3 {
-  font-size: 1.15rem;
+  font-size: var(--step-1);
+  font-stretch: 104%;
+  font-weight: 650;
 }
 
 p {
-  margin: 0 0 0.75rem;
+  margin: 0;
+  text-wrap: pretty;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
 }
 
 a {
-  color: var(--navy);
+  color: inherit;
+  text-decoration-line: underline;
+  text-decoration-color: color-mix(in srgb, var(--signal) 55%, transparent);
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.22em;
+  transition: text-decoration-color 160ms var(--ease), text-underline-offset 160ms var(--ease);
+}
+
+a:hover {
+  text-decoration-color: var(--signal);
+  text-underline-offset: 0.3em;
+}
+
+a:focus-visible {
+  outline: 3px solid var(--signal);
+  outline-offset: 3px;
+  border-radius: 3px;
 }
 
 img {
+  display: block;
   max-width: 100%;
   height: auto;
 }
 
-/* ---------- ID selectors ---------- */
+::selection {
+  background: color-mix(in srgb, var(--signal) 28%, white);
+  color: var(--ink);
+}
+
+/* ---------- 3. ID selectors: one-off page regions ---------- */
 #top {
   position: sticky;
   top: 0;
   z-index: 10;
 }
 
-#hero {
-  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
+#about,
+#education,
+#experience,
+#skills,
+#contact {
+  scroll-margin-top: 4.5rem; /* land below the sticky bar */
 }
 
 #contact {
-  background: var(--navy-dark);
+  background: var(--ink);
+  color: var(--on-ink);
 }
 
-/* ---------- Navigation (Flexbox) ---------- */
+/* ---------- 4. Navigation (Flexbox) ---------- */
 .site-header {
-  background: var(--navy);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  background: var(--surface);
+  border-block-end: 1px solid var(--line);
 }
 
 .nav {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 0.5rem 1.5rem;
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 0.85rem 1.25rem;
+  justify-content: space-between;
+  gap: 1rem 2rem;
+  max-width: var(--page);
+  margin-inline: auto;
+  padding: 0.9rem var(--gutter);
+  font-family: var(--font-ui);
 }
 
 .nav-brand {
-  font-family: "Montserrat", sans-serif;
-  font-weight: 700;
-  font-size: 1.15rem;
-  color: #fff;
+  flex-shrink: 0;
+  color: var(--ink);
+  font-size: 1.05rem;
+  font-stretch: 115%;
+  font-weight: 750;
   text-decoration: none;
 }
 
 .nav-links {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.25rem 1.25rem;
+  gap: 0.25rem;
   list-style: none;
-  margin: 0;
-  padding: 0;
 }
 
 .nav-links a {
-  color: #dfe7ef;
+  display: block;
+  padding: 0.4rem 0.7rem;
+  border-radius: 6px;
+  color: var(--ink-soft);
+  font-size: var(--small);
+  font-weight: 550;
   text-decoration: none;
-  font-weight: 700;
-  font-size: 0.95rem;
-  padding: 0.25rem 0;
-  border-bottom: 2px solid transparent;
-  transition: color 0.2s, border-color 0.2s;
+  transition: background-color 160ms var(--ease), color 160ms var(--ease);
 }
 
-.nav-links a:hover,
-.nav-links a:focus-visible {
-  color: #fff;
-  border-bottom-color: var(--sand);
+.nav-links a:hover {
+  background: var(--paper);
+  color: var(--ink);
 }
 
-/* ---------- Hero ---------- */
-.hero {
-  display: flex;
-  align-items: center;
-  gap: 2.5rem;
-  padding: 3.5rem max(1.25rem, calc((100% - 1100px) / 2 + 1.25rem));
-  color: #fff;
-}
-
-.hero-photo {
-  width: 220px;
-  height: 220px;
-  flex-shrink: 0;
-  object-fit: cover;
-  object-position: center 20%;
-  border-radius: 50%;
-  border: 6px solid #fff;
-}
-
-.hero-text h1 {
-  color: #fff;
-  font-size: clamp(2.25rem, 6vw, 3.5rem);
-  letter-spacing: 0.02em;
-}
-
-.eyebrow {
-  color: var(--sand);
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-size: 0.85rem;
-}
-
-.tagline {
-  max-width: 560px;
-  color: #dfe7ef;
-  font-size: 1.15rem;
-}
-
-.button {
-  display: inline-block;
-  margin-top: 0.75rem;
-  padding: 0.7rem 1.4rem;
-  border-radius: 999px;
-  background: var(--sand);
-  color: var(--navy-dark);
-  font-weight: 700;
-  text-decoration: none;
-  transition: background 0.2s;
-}
-
-.button:hover,
-.button:focus-visible {
-  background: #fff;
-}
-
-/* ---------- Sections and responsive cards ---------- */
-.section {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 3.5rem 1.25rem 1rem;
-}
-
-.card-grid {
+/* ---------- 5. About / intro ---------- */
+.intro {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 1.25rem;
+  grid-template-columns: minmax(0, 1fr) 17rem;
+  grid-template-areas:
+    "text  photo"
+    "goal  photo";
+  align-items: start;
+  gap: 2.5rem 4rem;
+  max-width: var(--page);
+  margin-inline: auto;
+  padding: clamp(3rem, 8vw, 6.5rem) var(--gutter) clamp(2.5rem, 6vw, 4.5rem);
 }
 
-.card-grid.two {
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+.intro-text {
+  grid-area: text;
 }
 
-.card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  padding: 1.5rem;
-  transition: transform 0.2s, box-shadow 0.2s;
+.intro h1 {
+  font-size: var(--step-3);
+  font-stretch: 122%;
+  font-weight: 800;
+  letter-spacing: -0.012em;
+  line-height: 0.95;
 }
 
-.card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 18px rgba(18, 40, 61, 0.12);
+.intro-role {
+  margin-block: 1.4rem 1.6rem;
+  color: var(--ink-soft);
+  font-family: var(--font-ui);
+  font-size: 1.1rem;
+  font-weight: 550;
+  line-height: 1.5;
 }
 
-.card ul {
-  margin: 0.5rem 0 0;
-  padding-left: 1.2rem;
+.intro-lede {
+  max-width: 38em;
+  font-size: 1.25rem;
+  line-height: 1.55;
 }
 
-.card li {
-  margin-bottom: 0.4rem;
+.intro-photo {
+  grid-area: photo;
+  width: 100%;
+  aspect-ratio: 308 / 337;
+  object-fit: cover;
+  border-radius: var(--radius-photo);
+  background: var(--line);
 }
 
-/* highlighted cards: Tritonox and SocioBlend */
-.card-highlight {
-  border-top: 5px solid var(--navy);
+.objective {
+  grid-area: goal;
+  max-width: 44rem;
 }
 
-/* current education: IIM Bangalore */
-.card-current {
-  border-top: 5px solid var(--sand);
-  background: var(--sand-light);
+.objective h2 {
+  margin-block-end: 0.6rem;
+  font-size: 1rem;
+  font-stretch: 100%;
+  font-weight: 650;
 }
 
-.date {
-  display: inline-block;
-  margin-bottom: 0.6rem;
-  padding: 0.15rem 0.7rem;
-  border-radius: 999px;
-  background: var(--navy);
-  color: #fff;
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.03em;
-}
-
-.role {
+.objective p {
   color: var(--muted);
-  font-weight: 700;
 }
 
-/* skill and language tags (Flexbox wrap) */
-.card ul.tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
+/* ---------- 6. Sections: heading rail + content ---------- */
+.section {
+  display: grid;
+  grid-template-columns: 13rem minmax(0, 1fr);
+  gap: 1.5rem 3rem;
+  max-width: var(--page);
+  margin-inline: auto;
+  padding: clamp(2.5rem, 6vw, 4.5rem) var(--gutter);
+  border-block-start: 1px solid var(--line);
+}
+
+.section > h2 {
+  position: sticky;
+  top: 5.5rem;
+  align-self: start;
+}
+
+/* ---------- 7. Cards ---------- */
+.card {
+  padding: clamp(1.25rem, 2.5vw, 1.75rem);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  background: var(--surface);
+}
+
+.card h3 + p,
+.card h3 + ul {
+  margin-block-start: 0.5rem;
+}
+
+.when {
+  margin-block-end: 0.6rem;
+  color: var(--muted);
+  font-family: var(--font-ui);
+  font-size: var(--small);
+  font-variant-numeric: tabular-nums;
+  font-weight: 550;
+}
+
+.when-now {
+  color: var(--signal-text);
+}
+
+/* small square marks something ongoing */
+.when-now::before {
+  content: "";
+  display: inline-block;
+  width: 0.5em;
+  height: 0.5em;
+  margin-inline-end: 0.5em;
+  background: var(--signal);
+  vertical-align: 0.08em;
+}
+
+/* Education: the current degree leads, school years follow */
+.edu-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.edu-main {
+  grid-column: 1 / -1;
+  padding-block: clamp(1.5rem, 3.5vw, 2.25rem);
+}
+
+.edu-main h3 {
+  font-size: clamp(1.5rem, 1.1rem + 1.2vw, 2rem);
+  font-stretch: 108%;
+}
+
+.edu-main p:last-child {
+  color: var(--ink-soft);
+}
+
+.score {
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-variant-numeric: tabular-nums;
+  font-weight: 650;
+}
+
+/* Experience: cards rearrange themselves by the width they get */
+.jobs {
+  display: grid;
+  gap: 1rem;
+  container-type: inline-size;
+}
+
+.job-role {
+  margin-block-start: 0.3rem;
+  color: var(--ink-soft);
+  font-family: var(--font-ui);
+  font-weight: 550;
+}
+
+.job-duties {
+  margin-block-start: 1.1rem;
   list-style: none;
-  padding: 0;
 }
 
-.tags li {
-  margin: 0;
-  padding: 0.35rem 0.85rem;
-  border-radius: 999px;
-  background: var(--sand-light);
-  color: var(--navy-dark);
-  font-size: 0.95rem;
+.job-duties li {
+  position: relative;
+  padding-inline-start: 1.25rem;
 }
 
-/* ---------- Footer / contact ---------- */
+.job-duties li + li {
+  margin-block-start: 0.55rem;
+}
+
+.job-duties li::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 0;
+  top: 0.72em;
+  width: 0.55rem;
+  height: 2px;
+  background: currentColor;
+  opacity: 0.45;
+}
+
+@container (min-width: 40rem) {
+  .job {
+    display: grid;
+    grid-template-columns: 15rem minmax(0, 1fr);
+    gap: 2.5rem;
+  }
+
+  .job-duties {
+    margin-block-start: 0;
+  }
+}
+
+/* Tritonox: the one dark card on the page */
+.job-current {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--on-ink);
+  padding: clamp(1.5rem, 3.5vw, 2.5rem);
+}
+
+.job-current h3 {
+  color: #ffffff;
+  font-size: clamp(1.45rem, 1.1rem + 1vw, 1.9rem);
+  font-stretch: 110%;
+}
+
+.job-current .job-role {
+  color: var(--on-ink-muted);
+}
+
+.job-current .when-now {
+  color: #ff9a6b; /* 6.9:1 on ink */
+}
+
+/* Skills */
+.skills-grid {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 1rem;
+}
+
+.skill-list {
+  columns: 2 13rem;
+  column-gap: 2rem;
+  list-style: none;
+}
+
+.skill-list li,
+.lang-list li {
+  padding-block: 0.55rem;
+  border-block-end: 1px solid var(--line);
+  break-inside: avoid;
+}
+
+.lang-list {
+  list-style: none;
+}
+
+.skill-list li:last-child,
+.lang-list li:last-child {
+  border-block-end: 0;
+}
+
+.level {
+  margin-inline-start: 0.4rem;
+  color: var(--muted);
+  font-family: var(--font-ui);
+  font-size: var(--small);
+}
+
+/* ---------- 8. Contact footer ---------- */
 .site-footer {
-  margin-top: 3.5rem;
-  padding: 3rem 1.25rem 2rem;
-  text-align: center;
-  color: #dfe7ef;
+  padding: clamp(3rem, 8vw, 5.5rem) max(var(--gutter), calc((100% - var(--page)) / 2 + var(--gutter)));
 }
 
 .site-footer h2 {
-  color: #fff;
+  color: var(--on-ink-muted);
+  font-size: 1rem;
+  font-stretch: 100%;
+  font-weight: 600;
 }
 
-.site-footer h2::after {
-  margin-left: auto;
-  margin-right: auto;
+.footer-email {
+  display: inline-block;
+  margin-block: 0.75rem 1.5rem;
+  color: #ffffff;
+  font-family: var(--font-ui);
+  font-size: clamp(1.4rem, 0.8rem + 3.4vw, 3.2rem);
+  font-stretch: 110%;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+  text-decoration-color: var(--signal);
 }
 
 .contact-list {
   display: flex;
-  justify-content: center;
   flex-wrap: wrap;
-  gap: 0.75rem 2rem;
+  gap: 0.5rem 2.5rem;
+  color: var(--on-ink-muted);
+  font-family: var(--font-ui);
   list-style: none;
-  margin: 0 0 1.5rem;
-  padding: 0;
 }
 
 .contact-list a {
-  color: #fff;
+  color: var(--on-ink);
 }
 
-.small {
-  font-size: 0.85rem;
-  color: #9fb0c2;
-}
-
-/* ---------- Responsive breakpoints ---------- */
-@media (max-width: 720px) {
-  .hero {
-    flex-direction: column;
-    text-align: center;
-    padding-top: 2.5rem;
+/* ---------- 9. Responsive ---------- */
+@media (max-width: 960px) {
+  .section {
+    grid-template-columns: minmax(0, 1fr);
   }
 
-  .hero-photo {
-    width: 170px;
-    height: 170px;
+  .section > h2 {
+    position: static;
   }
 
-  .tagline {
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .card-grid.two {
-    grid-template-columns: 1fr;
-  }
-
-  h2 {
-    font-size: 1.45rem;
+  .intro {
+    grid-template-columns: minmax(0, 1fr) 13rem;
+    gap: 2rem 2.5rem;
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 700px) {
+  .intro {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "photo"
+      "text"
+      "goal";
+  }
+
+  .intro-photo {
+    width: 10rem;
+  }
+
+  .edu-grid,
+  .skills-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* nav links scroll sideways instead of wrapping into a block */
   .nav {
-    justify-content: center;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.35rem;
+    padding-block: 0.7rem 0.45rem;
   }
 
   .nav-links {
-    justify-content: center;
-    gap: 0.25rem 0.9rem;
+    width: calc(100% + 2 * var(--gutter));
+    margin-inline: calc(-1 * var(--gutter));
+    padding-inline: calc(var(--gutter) - 0.7rem);
+    overflow-x: auto;
+    scrollbar-width: none;
+    /* fade the right edge so it reads as scrollable */
+    mask-image: linear-gradient(to right, #000 85%, transparent);
+  }
+
+  .nav-links::-webkit-scrollbar {
+    display: none;
   }
 
   .nav-links a {
-    font-size: 0.875rem;
+    white-space: nowrap;
   }
 
-  .card {
-    padding: 1.25rem;
+  #about,
+  #education,
+  #experience,
+  #skills,
+  #contact {
+    scroll-margin-top: 6rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+  }
+}
+
+/* ---------- 10. Print: the site doubles as a paper CV ---------- */
+@media print {
+  @page {
+    margin: 14mm;
+  }
+
+  body {
+    background: #ffffff;
+    font-size: 10.5pt;
+  }
+
+  .site-header {
+    display: none;
+  }
+
+  .intro,
+  .section,
+  .site-footer {
+    padding-block: 1rem;
+  }
+
+  .card,
+  .job-current {
+    break-inside: avoid;
+    border-color: var(--line);
+    background: #ffffff;
+    color: var(--text);
+  }
+
+  .job-current h3 {
+    color: var(--ink);
+  }
+
+  .job-current .job-role,
+  .job-current .when-now {
+    color: var(--signal-text);
+  }
+
+  #contact {
+    background: #ffffff;
+    color: var(--text);
+  }
+
+  .footer-email {
+    color: var(--ink);
+    font-size: 1.4rem;
   }
 }
